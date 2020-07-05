@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity">
+
+    <EditText
+        android:id="@+id/edtValue"
+        android:layout_width="279dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="50dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="52dp"
+        android:gravity="center"
+        android:text="R$:"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnConverter"
+        android:layout_width="204dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp1" />
+
+    <Spinner
+        android:id="@+id/sp1"
+        android:layout_width="134dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtValue" />
+
+    <Spinner
+        android:id="@+id/sp2"
+        android:layout_width="132dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintStart_toEndOf="@+id/sp1"
+        app:layout_constraintTop_toBottomOf="@+id/edtValue" />
+
+    <TextView
+        android:id="@+id/txtCurrencie"
+        android:layout_width="63dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="60dp"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/btnConverter" />
+
+    <TextView
+        android:id="@+id/txtValueConverted"
+        android:layout_width="271dp"
+        android:layout_height="57dp"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/edtValue"
+        app:layout_constraintStart_toEndOf="@+id/txtCurrencie"
+        app:layout_constraintTop_toTopOf="@+id/txtCurrencie" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
