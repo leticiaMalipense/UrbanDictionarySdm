@@ -1,15 +1,14 @@
 package br.edu.ifsp.scl.urbandictsdm.view
 
+import android.os.Build
 import android.os.Bundle
-import android.widget.ArrayAdapter
+import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import br.edu.ifsp.scl.financialmanager.utils.MoneyMask
 import br.edu.ifsp.scl.urbandictsdm.R
+import br.edu.ifsp.scl.urbandictsdm.model.Response
 import br.edu.ifsp.scl.urbandictsdm.viewmodel.UrbanDictionaryViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.DecimalFormat
-import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: UrbanDictionaryViewModel
@@ -18,45 +17,37 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        edtValue.addTextChangedListener(MoneyMask.monetario(edtValue))
+        supportActionBar?.title = getString(R.string.urban_dictionary_sdm)
 
         viewModel = UrbanDictionaryViewModel(this)
-        var list = mutableListOf<String>()
 
-        viewModel.getAvailable().observe(
-            this@MainActivity,
-            Observer {
-
-                it.currencies.keys.forEach{
-                    list.add(it)
-                }
-
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
-                sp1.adapter = adapter
-                sp2.adapter = adapter
+        /* Listener de click no botão */
+        definirBt.setOnClickListener {
+            val palavra = palavraEt.text.toString()
+            if (palavra.isNotEmpty()) {
+                /* Acessar Web Service */
+                viewModel.buscaSignificado(palavra).observe(
+                    this@MainActivity,
+                    Observer {
+                        mostrarSignificados(it)
+                    }
+                )
             }
-        )
-
-        btnConverter.setOnClickListener {
-            val currencies1 = sp1.selectedItem.toString()
-            val currencies2 = sp2.selectedItem.toString()
-            val value : String = edtValue.text.toString().replace(",","")
-
-            viewModel.converter(currencies1, currencies2, value).observe(
-                this@MainActivity,
-                Observer {
-                    //txtCurrencie.text = it.rates.converted.rate.toString()
-                    val converted = it.rates.values.elementAt(0)
-
-                    val formatter: NumberFormat = DecimalFormat("#,###.##")
-                    val value: Double = converted.rateForAmount.toDouble()
-
-                    txtValueConverted.text = formatter.format(value)
-                    txtCurrencie.text = currencies2
-                }
-            )
         }
-
     }
 
+    private fun mostrarSignificados(resposta: Response) {
+        val significados = StringBuffer()
+        resposta.list.withIndex().forEach{
+            significados.append("<font color='#6200ee'><b>Significado ${it.index + 1}:</b></font> ${it.value.definition} <br>")
+            significados.append("<b>Exemplo:</b> ${it.value.example}<br>")
+            significados.append("<b>Autor:</b> ${it.value.author}<br><br>")
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            significadoTv.setText(Html.fromHtml(significados.toString(), Html.FROM_HTML_MODE_LEGACY))
+        }
+        else {
+            significadoTv.setText(Html.fromHtml(significados.toString()))
+        }
+    }
 }
